@@ -208,15 +208,33 @@ class DBORM implements iDBFuncs{
     }
 
     public function update(Array $values): int{
+        $this->sql .= 'UPDATE '.$this->table.' SET ';
+
+        $numberOfValues = count($values);
+        $counter = 0;
+
+        foreach($values as $key => $value){
+            $this->sql .= $key.' = ?';
+            if($counter < ($numberOfValues-1))
+                $this->sql .= ', ';
+            $counter++;
+        }
+
+        $this->sql .= ';';
+
+        $result = $this->_executeQuery();
+
+        return $result;
 
     }
 
     public function delete(): int{
+        $this->sql .= 'DELETE FROM '.$this->table.';';
+
+        $result = $this->_executeQuery();
+
+        return $result;
 
     }
-
-    
-
-
 
 }
